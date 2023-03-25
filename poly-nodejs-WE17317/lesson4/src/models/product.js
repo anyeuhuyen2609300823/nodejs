@@ -1,6 +1,4 @@
 import mongoose from "mongoose";
-import { express } from "express";
-import { string } from "joi";
 const { Schema } = mongoose;
 
 const product = new Schema({
@@ -54,6 +52,47 @@ const product = new Schema({
 
 // khai báo các biến phụ ra ngoài
 
+// khai báo image
+const images = new mongoose.Schema({
+  type: [objImageSchema],
+  required: true,
+});
+
+const objImageSchema = new mongoose.Schema({
+  base_url: {
+    type: String,
+    required: true,
+  },
+  is_gallery: {
+    type: Boolean,
+    required: true,
+  },
+  label: {
+    type: null,
+    required: true,
+  },
+  large_url: {
+    type: String,
+    required: true,
+  },
+  medium_url: {
+    type: String,
+    required: true,
+  },
+  position: {
+    type: null,
+    required: true,
+  },
+  small_url: {
+    type: String,
+    required: true,
+  },
+  thumbnail_url: {
+    type: String,
+    required: true,
+  },
+});
+
 // khai báo specifications
 const specOb = new mongoose.Schema({
   name: {
@@ -93,47 +132,6 @@ const brandObject = new mongoose.Schema({
   },
   slug: {
     type: String,
-    required: true,
-  },
-});
-
-// khai báo image
-const images = new mongoose.Schema({
-  type: [objImageSchema],
-  required: true,
-});
-
-const objImageSchema = new mongoose.Schema({
-  base_url: {
-    type: string,
-    required: true,
-  },
-  is_gallery: {
-    type: Boolean,
-    required: true,
-  },
-  label: {
-    type: null,
-    required: true,
-  },
-  large_url: {
-    type: string,
-    required: true,
-  },
-  medium_url: {
-    type: string,
-    required: true,
-  },
-  position: {
-    type: null,
-    required: true,
-  },
-  small_url: {
-    type: string,
-    required: true,
-  },
-  thumbnail_url: {
-    type: string,
     required: true,
   },
 });

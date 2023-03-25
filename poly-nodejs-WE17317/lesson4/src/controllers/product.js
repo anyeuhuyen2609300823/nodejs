@@ -3,7 +3,12 @@ import product from "../models/product";
 
 const productSchema = Joi.object({
   name: Joi.string().required(),
-  price: Joi.number(),
+  price: Joi.number().required(),
+  original_price: Joi.number().required(),
+  description: Joi.string().required(),
+  images: Joi.array().required(),
+  brand: Joi.array().required(),
+  specifications: Joi.array().required(),
 });
 
 // lấy ra
@@ -90,6 +95,7 @@ export const update = async (req, res) => {
   }
 };
 
+// xóa
 export const remove = async (req, res) => {
   try {
     const id = req.params.id;
@@ -107,6 +113,36 @@ export const remove = async (req, res) => {
   } catch (err) {
     res.status(500).send({
       message: err,
+    });
+  }
+};
+
+// tìm kiếm
+
+export const searchProduct = async (req, res) => {
+  const id = req.params.id;
+  const body = req.body;
+  const { error } = productSchema.validate(body);
+  try {
+    if (error) {
+      res.status(400).send({
+        message: error.message,
+      });
+    } else {
+      const products = await product.find({
+        $or: [
+          { name: { $regex: new RegExp(body, "i") } },
+          { description: { $regex: new RegExp(query, "i") } },
+        ],
+      });
+      res.send({
+        message: "Search successful",
+        data: products,
+      });
+    }
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "Some error occurred while searching products.",
     });
   }
 };
