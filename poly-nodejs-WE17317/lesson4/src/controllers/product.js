@@ -59,3 +59,54 @@ export const create = async (req, res) => {
     });
   }
 };
+
+// sửa
+export const update = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const body = req.body;
+    const { error } = productSchema.validate(body);
+    if (error) {
+      res.status(400).send({
+        message: error.message,
+      });
+    } else {
+      const data = await product.findByIdAndUpdate(id, body);
+      if (data) {
+        res.send({
+          message: "Update successfully",
+          data: data,
+        });
+      } else {
+        res.status(400).send({
+          message: "Product is not existed",
+        });
+      }
+    }
+  } catch (error) {
+    res.status(500).send({
+      message: error,
+    });
+  }
+};
+
+export const remove = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const data = await Product.findByIdAndRemove(id);
+    if (data) {
+      res.send({
+        message: "Delete successfully",
+        data: data,
+      });
+    } else {
+      res.status(400).send({
+        message: "Product is not existed",
+      });
+    }
+  } catch (err) {
+    res.status(500).send({
+      message: err,
+    });
+  }
+};
