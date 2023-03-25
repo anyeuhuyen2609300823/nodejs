@@ -37,7 +37,7 @@ const product = new Schema({
     required: true,
   },
   specifications: {
-    type: [],
+    type: [specOb],
     required: true,
   },
 
