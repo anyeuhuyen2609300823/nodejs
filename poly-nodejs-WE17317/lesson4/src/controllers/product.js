@@ -1,14 +1,42 @@
 import Joi from "joi";
 import product from "../models/Device";
 
+const Images = Joi.object({
+  base_url: Joi.string().required(),
+  is_gallery: Joi.boolean(),
+  label: Joi.string().required(),
+  large_url: Joi.string().required(),
+  medium_url: Joi.string().required(),
+  position: Joi.string().required(),
+  small_url: Joi.string().required(),
+  thumbnail_url: Joi.string().required(),
+});
+
+const Brand = Joi.object({
+  id: Joi.number(),
+  name: Joi.string().required(),
+  slug: Joi.string().required(),
+});
+
+const Attributes = Joi.object({
+  code: Joi.string(),
+  name: Joi.string(),
+  value: Joi.string(),
+});
+
+const Specifications = Joi.object({
+  name: Joi.string().required(),
+  attributes: Joi.array().items(Attributes).min(1).required(),
+});
+
 const productSchema = Joi.object({
   name: Joi.string().required(),
-  price: Joi.number().required(),
-  original_price: Joi.number().required(),
+  price: Joi.number(),
+  original_price: Joi.number(),
   description: Joi.string().required(),
-  images: Joi.array().required(),
-  brand: Joi.array().required(),
-  specifications: Joi.array().required(),
+  images: Joi.array().items(Images).min(1),
+  brand: Joi.array().items(Brand).min(1).required(),
+  specifications: Joi.array().items(Specifications).min(1).required(),
 });
 
 // lấy ra
@@ -99,7 +127,7 @@ export const update = async (req, res) => {
 export const remove = async (req, res) => {
   try {
     const id = req.params.id;
-    const data = await Product.findByIdAndRemove(id);
+    const data = await product.findByIdAndRemove(id);
     if (data) {
       res.send({
         message: "Delete successfully",
@@ -119,30 +147,28 @@ export const remove = async (req, res) => {
 
 // tìm kiếm
 
-export const searchProduct = async (req, res) => {
-  const id = req.params.id;
-  const body = req.body;
-  const { error } = productSchema.validate(body);
+export const searchDevice = async (req, res) => {
   try {
-    if (error) {
-      res.status(400).send({
-        message: error.message,
+    const query = req.query.q;
+    const data = await product.find({
+      $or: [
+        { name: { $regex: query, $options: "i" } },
+        { description: { $regex: query, $options: "i" } },
+      ],
+    });
+    if (data.length > 0) {
+      res.send({
+        message: "Search results",
+        data: data,
       });
     } else {
-      const products = await product.find({
-        $or: [
-          { name: { $regex: new RegExp(body, "i") } },
-          { description: { $regex: new RegExp(query, "i") } },
-        ],
-      });
-      res.send({
-        message: "Search successful",
-        data: products,
+      res.status(404).send({
+        message: "No products found",
       });
     }
   } catch (err) {
     res.status(500).send({
-      message: err.message || "Some error occurred while searching products.",
+      message: err,
     });
   }
 };

@@ -5,7 +5,7 @@ import {
   create,
   update,
   remove,
-  searchProduct,
+  searchDevice,
 } from "../controllers/product";
 
 const productRouter = express.Router();
@@ -15,6 +15,6 @@ productRouter.get("/products/:id", getById);
 productRouter.post("/products", create);
 productRouter.put("/products/:id", update);
 productRouter.delete("/products/:id", remove);
-productRouter.get("/products", searchProduct);
+productRouter.get("/products", searchDevice);
 
 export default productRouter;

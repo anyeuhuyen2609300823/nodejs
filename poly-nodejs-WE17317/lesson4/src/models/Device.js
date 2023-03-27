@@ -41,21 +41,8 @@ const brandIc = new Schema({
     required: true,
   },
 });
-
-// khai báo specifications
-const speCi = new Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  attributes: {
-    type: [attri],
-    required: true,
-  },
-});
-
 //  khai báo attributes
-const attri = new Schema({
+const Attris = new Schema({
   code: {
     type: String,
     required: true,
@@ -66,6 +53,18 @@ const attri = new Schema({
   },
   value: {
     type: String,
+    required: true,
+  },
+});
+
+// khai báo specifications
+const speCi = new Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  attributes: {
+    type: [Attris],
     required: true,
   },
 });
@@ -86,7 +85,7 @@ const Device = new Schema({
   },
   images: {
     type: [Image],
-    required: true,
+    // required: true,
   },
   brand: {
     type: [brandIc],
