@@ -34,8 +34,8 @@ const productSchema = Joi.object({
   price: Joi.number(),
   original_price: Joi.number(),
   description: Joi.string().required(),
-  images: Joi.array().items(Images).min(1),
-  brand: Joi.array().items(Brand).min(1).required(),
+  images: Joi.array().items(Images).min(1).required(),
+  brand: Joi.object().min(1).required(),
   specifications: Joi.array().items(Specifications).min(1).required(),
 });
 

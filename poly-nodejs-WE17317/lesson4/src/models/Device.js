@@ -30,17 +30,17 @@ const Image = new Schema({
 });
 
 // khai báo brand
-const brandIc = new Schema({
-  id: Number,
-  name: {
-    type: String,
-    required: true,
-  },
-  slug: {
-    type: String,
-    required: true,
-  },
-});
+// const brandIc = new Schema({
+//   id: Number,
+//   name: {
+//     type: String,
+//     required: true,
+//   },
+//   slug: {
+//     type: String,
+//     required: true,
+//   },
+// });
 //  khai báo attributes
 const Attris = new Schema({
   code: {
@@ -85,11 +85,18 @@ const Device = new Schema({
   },
   images: {
     type: [Image],
-    // required: true,
+    required: true,
   },
   brand: {
-    type: [brandIc],
-    required: true,
+    id: Number,
+    name: {
+      type: String,
+      required: true,
+    },
+    slug: {
+      type: String,
+      required: true,
+    },
   },
   specifications: {
     type: [speCi],
