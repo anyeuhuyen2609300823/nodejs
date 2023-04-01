@@ -4,19 +4,17 @@ import product from "../models/Device";
 const Images = Joi.object({
   base_url: Joi.string().required(),
   is_gallery: Joi.boolean(),
-  label: Joi.string().required(),
+  label: Joi.string().allow(null),
   large_url: Joi.string().required(),
   medium_url: Joi.string().required(),
-  position: Joi.string().required(),
+  position: Joi.string().allow(null),
   small_url: Joi.string().required(),
   thumbnail_url: Joi.string().required(),
 });
 
-const Brand = Joi.object({
-  id: Joi.number(),
-  name: Joi.string().required(),
-  slug: Joi.string().required(),
-});
+// const Brand = Joi.object({
+
+// });
 
 const Attributes = Joi.object({
   code: Joi.string(),
@@ -35,7 +33,11 @@ const productSchema = Joi.object({
   original_price: Joi.number(),
   description: Joi.string().required(),
   images: Joi.array().items(Images).min(1).required(),
-  brand: Joi.object().min(1).required(),
+  brand: Joi.object({
+    id: Joi.number(),
+    name: Joi.string().required(),
+    slug: Joi.string().required(),
+  }).required(),
   specifications: Joi.array().items(Specifications).min(1).required(),
 });
 
