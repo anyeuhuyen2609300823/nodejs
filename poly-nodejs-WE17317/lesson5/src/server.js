@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 
 import userRouter from "./router/user";
+import invoiceRouter from "./router/invoice";
 
 const app = express();
 const port = 8080;
@@ -16,6 +17,7 @@ app.use(bodyParser.json());
 
 // Router
 app.use("/auth", userRouter);
+app.use("/api", invoiceRouter);
 
 // MongoDB
 mongoose
